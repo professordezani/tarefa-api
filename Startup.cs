@@ -12,11 +12,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace TarefasBackEnd
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; set; }
+
+        public Startup(IConfiguration configuration) {
+            Configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {     
             services.AddControllers();
@@ -38,7 +45,8 @@ namespace TarefasBackEnd
                 };
             });
 
-            services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("BDTarefas"));  
+            // services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("BDTarefas"));  
+            services.AddDbContext<DataContext>(options => options.UseNpgsql(Configuration.GetConnectionString("Heroku")));
 
             services.AddTransient<ITarefaRepository, TarefaRepository>();     
             services.AddTransient<IUsuarioRepository, UsuarioRepository>();     
