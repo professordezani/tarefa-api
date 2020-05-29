@@ -12,7 +12,7 @@ namespace TarefasBackEnd.Controllers
     public class TarefaController : ControllerBase
     {
         [HttpGet]
-        [AllowAnonymous]
+        // [AllowAnonymous]
         public IActionResult Read([FromServices]ITarefaRepository repository) 
         { 
             var id = new Guid(User.Identity.Name);
